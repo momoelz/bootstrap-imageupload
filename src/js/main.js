@@ -244,35 +244,39 @@ if (typeof jQuery === 'undefined') {
         }
 
         $browseFileButton.prop('disabled', true);
+
+		var file;
         
-        var file = $fileInput[0].files[0];
+        for (var i = 0; i < $fileInput[0].files.length; i++) { 
+			file = $fileInput[0].files[i];
 
-        isValidImageFile(file, function(isValid, message) {
-            if (isValid) {
-                var fileReader = new FileReader();
+			isValidImageFile(file, function(isValid, message) {
+				if (isValid) {
+					var fileReader = new FileReader();
 
-                fileReader.onload = function(e) {
-                    // Show thumbnail and remove button.
-                    $fileTab.prepend(getImageThumbnailHtml(e.target.result));
-                    $browseFileButton.find('span').text('Change');
-                    $removeFileButton.css('display', 'inline-block');
-                };
+					fileReader.onload = function(e) {
+						// Show thumbnail and remove button.
+						$fileTab.prepend(getImageThumbnailHtml(e.target.result));
+						$browseFileButton.find('span').text('ändern');
+						$removeFileButton.css('display', 'inline-block');
+					};
 
-                fileReader.onerror = function() {
-                    $fileTab.prepend(getAlertHtml('Error loading image file.'));
-                    $fileInput.val('');
-                };
+					fileReader.onerror = function() {
+						$fileTab.prepend(getAlertHtml('Error loading image file.'));
+						$fileInput.val('');
+					};
 
-                fileReader.readAsDataURL(file);
-            }
-            else {
-                $fileTab.prepend(getAlertHtml(message));
-                $browseFileButton.find('span').text('Browse');
-                $fileInput.val('');
-            }
+					fileReader.readAsDataURL(file);
+				}
+				else {
+					$fileTab.prepend(getAlertHtml(message));
+					$browseFileButton.find('span').text('durchsuchen');
+					$fileInput.val('');
+				}
 
-            $browseFileButton.prop('disabled', false);
-        });
+				$browseFileButton.prop('disabled', false);
+			});
+		}
     }
 
     function showUrlTab($urlTab) {
